@@ -14,7 +14,6 @@
         "react-scripts": "3.4.4"
     },
     "scripts": {
-        "analyze": "node scripts/analyze.js",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "eject": "react-scripts eject"
@@ -35,8 +34,6 @@
         ]
     },
     "devDependencies": {
-        "progress-bar-webpack-plugin": "^2.1.0",
-        "prettier": "2.0.5",
-        "webpack-bundle-analyzer": "^3.8.0"
+        "prettier": "2.0.5"
     }
 }
