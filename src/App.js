@@ -6,11 +6,6 @@ import { Nav, NavDetailed, DimensionsWidget } from "./components"
 import { updateHexapod, Page } from "./AppHelpers"
 import HexapodPlot from "./components/HexapodPlot"
 
-window.dataLayer = window.dataLayer || []
-function gtag() {
-    window.dataLayer.push(arguments)
-}
-
 class App extends React.Component {
     state = {
         inHexapodPage: false,
@@ -24,9 +19,6 @@ class App extends React.Component {
 
     onPageLoad = pageName => {
         document.title = pageName + " - Mithi's Bare Minimum Hexapod Robot Simulator"
-        gtag("config", "UA-170794768-1", {
-            page_path: window.location.pathname + window.location.search,
-        })
 
         if (pageName === SECTION_NAMES.landingPage) {
             this.setState({ inHexapodPage: false })
