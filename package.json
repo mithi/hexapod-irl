@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "hexapod-kinematics-library": "0.0.5",
+        "johnny-five": "^2.0.0",
         "plotly.js": "^1.54.7",
         "plotly.js-gl3d-dist-min": "^1.54.7",
         "pubnub": "^4.29.10",
