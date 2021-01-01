@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import { BrowserRouter as Router } from "react-router-dom"
 import { DEFAULT_POSE } from "./templates"
 import { SECTION_NAMES } from "./components/vars"
@@ -6,82 +6,55 @@ import { Nav, NavDetailed, DimensionsWidget } from "./components"
 import { updateHexapod, Page } from "./AppHelpers"
 import HexapodPlot from "./components/HexapodPlot"
 
-class App extends React.Component {
-    state = {
-        inHexapodPage: false,
-        hexapod: updateHexapod("default"),
-        revision: 0,
-    }
+const App = () => {
+    const [pageName, setPageName] = useState(SECTION_NAMES.landingPage)
+    const [hexapod, setHexapod] = useState(() => updateHexapod("default"))
+    const [revision, setRevision] = useState(0)
+    const inHexapodPage = pageName !== SECTION_NAMES.landingPage
 
-    /* * * * * * * * * * * * * *
-     * Page load Callback
-     * * * * * * * * * * * * * */
+    const manageState = useCallback((updateType, newParam) => {
+        setRevision(r => r + 1)
+        setHexapod(h => updateHexapod(updateType, newParam, h))
+    }, [])
 
-    onPageLoad = pageName => {
+    useEffect(() => {
         document.title = pageName + " - Mithi's Bare Minimum Hexapod Robot Simulator"
+        manageState("pose", { pose: DEFAULT_POSE })
+    }, [pageName, manageState])
 
-        if (pageName === SECTION_NAMES.landingPage) {
-            this.setState({ inHexapodPage: false })
-            return
-        }
-
-        this.setState({ inHexapodPage: true })
-        this.manageState("pose", { pose: DEFAULT_POSE })
-    }
-
-    /* * * * * * * * * * * * * *
-     * State Management Callback
-     * * * * * * * * * * * * * */
-
-    manageState = (updateType, newParam) => {
-        const hexapod = updateHexapod(updateType, newParam, this.state.hexapod)
-
-        this.setState({
-            revision: this.state.revision + 1,
-            hexapod,
-        })
-    }
-    /* * * * * * * * * * * * * *
-     * Page Component Prototype
-     * * * * * * * * * * * * * */
-
-    pageComponent = Component => (
-        <Component
-            onMount={this.onPageLoad}
-            onUpdate={this.manageState}
-            params={{
-                dimensions: this.state.hexapod.dimensions,
-                pose: this.state.hexapod.pose,
-            }}
-        />
+    const pageComponent = useCallback(
+        Component => (
+            <Component
+                onMount={newPageName => setPageName(newPageName)}
+                onUpdate={manageState}
+                params={{
+                    dimensions: hexapod.dimensions,
+                    pose: hexapod.pose,
+                }}
+            />
+        ),
+        [manageState, hexapod]
     )
 
-    /* * * * * * * * * * * * * *
-     * Layout
-     * * * * * * * * * * * * * */
-
-    render = () => (
+    return (
         <Router>
             <Nav />
             <div id="main">
                 <div id="sidebar">
-                    <div hidden={!this.state.inHexapodPage}>
+                    <div hidden={!inHexapodPage}>
                         <DimensionsWidget
-                            params={{ dimensions: this.state.hexapod.dimensions }}
-                            onUpdate={this.manageState}
+                            params={{ dimensions: hexapod.dimensions }}
+                            onUpdate={manageState}
                         />
                     </div>
-                    <Page pageComponent={this.pageComponent} />
-                    {!this.state.inHexapodPage ? <NavDetailed /> : null}
+                    <Page pageComponent={pageComponent} />
+                    {!inHexapodPage ? <NavDetailed /> : null}
                 </div>
-                <div id="plot" className="border" hidden={!this.state.inHexapodPage}>
-                    <HexapodPlot
-                        revision={this.state.revision}
-                        hexapod={this.state.hexapod}
-                    />
+                <div id="plot" className="border" hidden={!inHexapodPage}>
+                    <HexapodPlot revision={revision} hexapod={hexapod} />
                 </div>
             </div>
-            {this.state.inHexapodPage ? <NavDetailed /> : null}
+            {inHexapodPage ? <NavDetailed /> : null}
         </Router>
     )
 }
