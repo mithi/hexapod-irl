@@ -5,12 +5,23 @@ import { SECTION_NAMES } from "./components/vars"
 import { Nav, NavDetailed, DimensionsWidget } from "./components"
 import { updateHexapod, Page } from "./AppHelpers"
 import HexapodPlot from "./components/HexapodPlot"
+import { usePubNub } from "pubnub-react"
+
+const channel = "hexapod-pose"
 
 const App = () => {
     const [pageName, setPageName] = useState(SECTION_NAMES.landingPage)
     const [hexapod, setHexapod] = useState(() => updateHexapod("default"))
     const [revision, setRevision] = useState(0)
+    const pubnub = usePubNub()
+
     const inHexapodPage = pageName !== SECTION_NAMES.landingPage
+
+    useEffect(() => {
+        pubnub
+            .publish({ channel, message: { pose: hexapod.pose } })
+            .then(() => console.log("sent."))
+    }, [pubnub, hexapod])
 
     const manageState = useCallback((updateType, newParam) => {
         setRevision(r => r + 1)
