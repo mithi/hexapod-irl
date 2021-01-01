@@ -2,7 +2,7 @@ import React from "react"
 import { Route, Switch, Redirect } from "react-router-dom"
 import { PATHS } from "./components/vars"
 import * as defaults from "./templates"
-import { VirtualHexapod } from "./hexapod"
+import { VirtualHexapod } from "hexapod-kinematics-library"
 import {
     InverseKinematicsPage,
     WalkingGaitsPage,

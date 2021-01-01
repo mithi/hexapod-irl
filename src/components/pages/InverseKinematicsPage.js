@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { sliderList, Card, ResetButton, AlertBox } from "../generic"
-import { solveInverseKinematics } from "../../hexapod"
+import { solveInverseKinematics } from "hexapod-kinematics-library"
 import { SECTION_NAMES, IK_SLIDERS_LABELS } from "../vars"
 import { DEFAULT_IK_PARAMS } from "../../templates"
 import PoseTable from "../pagePartials/PoseTable"
