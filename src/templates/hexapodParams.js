@@ -1,21 +1,22 @@
-const DEFAULT_BODY_DIMENSIONS = {
-    front: 100,
-    side: 100,
-    middle: 100,
-}
-const DEFAULT_LEG_DIMENSIONS = {
-    coxia: 100,
-    femur: 100,
-    tibia: 100,
+// Previously all 100
+const DEFAULT_DIMENSIONS = {
+    front: 400,
+    side: 750,
+    middle: 650,
+    coxia: 300,
+    femur: 850,
+    tibia: 1200,
 }
 
-const DEFAULT_DIMENSIONS = {
-    front: 100,
-    side: 100,
-    middle: 100,
-    coxia: 100,
-    femur: 100,
-    tibia: 100,
+const DEFAULT_BODY_DIMENSIONS = {
+    front: DEFAULT_DIMENSIONS.front,
+    side: DEFAULT_DIMENSIONS.side,
+    middle: DEFAULT_DIMENSIONS.middle,
+}
+const DEFAULT_LEG_DIMENSIONS = {
+    coxia: DEFAULT_DIMENSIONS.coxia,
+    femur: DEFAULT_DIMENSIONS.femur,
+    tibia: DEFAULT_DIMENSIONS.tibia,
 }
 
 const DEFAULT_POSE = {
