@@ -1,5 +1,5 @@
 import React from "react"
-import { POSITION_NAMES_LIST } from "../../hexapod"
+import { POSITION_NAMES_LIST } from "hexapod-kinematics-library"
 
 const POSITION_ALIAS = {
     rightMiddle: "rm",
