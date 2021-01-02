@@ -143,7 +143,7 @@ const REPO_LINK_PROPERTIES = {
     name: "REPO",
     icon: ICON_COMPONENTS.octocat,
     description: "Source Code",
-    url: "https://github.com/mithi/hexapod",
+    url: "https://github.com/mithi/hexapod-irl",
 }
 
 const PATH_LINKS = [
