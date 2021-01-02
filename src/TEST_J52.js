@@ -17,11 +17,6 @@ const LEG_POSITIONS = [
     "rightBack",
 ]
 
-const clean = x => {
-    const n = Number(x)
-    return isNaN(n) ? 0 : Math.max(Math.min(Math.round(n) + 90, 180), 0)
-}
-
 board.on("ready", () => {
     console.log(".....Connected.....")
 
@@ -48,11 +43,10 @@ board.on("ready", () => {
     // *************************
     // COMMAND SERVOS
     // *************************
-    const setServo = (pose, leg, angle) =>
-        hexapodServos[leg][angle].to(clean(pose[leg][angle]))
+    const setServo = (pose, leg, angle) => hexapodServos[leg][angle].to(pose[leg][angle])
 
     const setHexapodPose = messageEvent => {
-        console.log("...setServo....", messageEvent.message)
+        //console.log("...setServo....", messageEvent.message)
         const pose = messageEvent.message.pose
 
         if (!pose) {
