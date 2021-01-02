@@ -50,7 +50,7 @@ const GAIT_SLIDER_LABELS = [
  * RANGE PARAMS
  *************/
 
-const rangeParams = absVal => ({ minVal: -absVal, maxVal: absVal, stepVal: 0.01 })
+const rangeParams = absVal => ({ minVal: -absVal, maxVal: absVal, stepVal: 1 })
 const RANGES = {
     30: rangeParams(30),
     45: rangeParams(45),
@@ -59,7 +59,7 @@ const RANGES = {
     180: rangeParams(180),
 }
 
-const translateInputs = { minVal: -1, maxVal: 1, stepVal: 0.01 }
+const translateInputs = { minVal: -1, maxVal: 1, stepVal: 0.1 }
 
 const RANGE_PARAMS = {
     dimensionInputs: { minVal: 0, maxVal: Infinity, stepVal: 1 },
@@ -71,20 +71,20 @@ const RANGE_PARAMS = {
     rz: RANGES[60],
     legStance: RANGES[90],
     hipStance: RANGES[60],
-    alpha: RANGES[90],
-    beta: RANGES[180],
-    gamma: RANGES[180],
+    alpha: RANGES[30],
+    beta: RANGES[90],
+    gamma: RANGES[90],
 }
 
 const GAIT_RANGE_PARAMS = {
-    tx: { minVal: -0.25, maxVal: 0.25, stepVal: 0.01, defaultVal: 0 },
-    tz: { minVal: -0.5, maxVal: 0.5, stepVal: 0.01, defaultVal: 0 },
-    rx: { minVal: -15, maxVal: 15, stepVal: 0.5, defaultVal: 0 },
-    ry: { minVal: -15, maxVal: 15, stepVal: 0.5, defaultVal: 0 },
-    legStance: { minVal: -50, maxVal: 50, stepVal: 0.5, defaultVal: 0 },
-    hipStance: { minVal: 0, maxVal: 40, stepVal: 0.5, defaultVal: 20 },
-    hipSwing: { minVal: 10, maxVal: 40, stepVal: 0.5, defaultVal: 25 },
-    liftSwing: { minVal: 10, maxVal: 70, stepVal: 0.5, defaultVal: 40 },
+    tx: { minVal: -0.25, maxVal: 0.25, stepVal: 0.1, defaultVal: 0 },
+    tz: { minVal: -0.5, maxVal: 0.5, stepVal: 0.1, defaultVal: 0 },
+    rx: { minVal: -15, maxVal: 15, stepVal: 2.5, defaultVal: 0 },
+    ry: { minVal: -15, maxVal: 15, stepVal: 2.5, defaultVal: 0 },
+    legStance: { minVal: -50, maxVal: 50, stepVal: 1, defaultVal: 0 },
+    hipStance: { minVal: 0, maxVal: 40, stepVal: 1, defaultVal: 20 },
+    hipSwing: { minVal: 10, maxVal: 40, stepVal: 1, defaultVal: 25 },
+    liftSwing: { minVal: 10, maxVal: 70, stepVal: 1, defaultVal: 40 },
     stepCount: { minVal: 3, maxVal: 7, stepVal: 1, defaultVal: 5 },
 }
 /*************
