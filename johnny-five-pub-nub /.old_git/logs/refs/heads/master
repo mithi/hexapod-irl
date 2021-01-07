@@ -1,0 +1,31 @@
+0000000000000000000000000000000000000000 2044533dfd88a1ad49c288288ba6bb7978397b0b Mithi <mithi.sevilla@gmail.com> 1609077849 +0800	commit (initial): 🧹 First commit
+2044533dfd88a1ad49c288288ba6bb7978397b0b a5e74c5832ee99d00bbf8ecdd51647a511b0a1fc Mithi <mithi.sevilla@gmail.com> 1609077877 +0800	commit: 💕 Make servo move
+a5e74c5832ee99d00bbf8ecdd51647a511b0a1fc 2044533dfd88a1ad49c288288ba6bb7978397b0b Mithi <mithi.sevilla@gmail.com> 1609079194 +0800	reset: moving to HEAD~
+2044533dfd88a1ad49c288288ba6bb7978397b0b 541327468f009d4ff773f9ae88a286e3cf5a38b3 Mithi <mithi.sevilla@gmail.com> 1609079220 +0800	commit: 💕 Make servo move
+541327468f009d4ff773f9ae88a286e3cf5a38b3 43fa88f2c05a382a7967a649b1076ca196fc711b Mithi <mithi.sevilla@gmail.com> 1609080782 +0800	commit: 💕 Sweep up and down manually
+43fa88f2c05a382a7967a649b1076ca196fc711b 6ed2436ca59e8b749558866f7dec1359fb7d9aa3 Mithi <mithi.sevilla@gmail.com> 1609100738 +0800	commit: 💕 Add code for servo calibration
+6ed2436ca59e8b749558866f7dec1359fb7d9aa3 e0480f160b5fb601015954d46c850129fdff3743 Mithi <mithi.sevilla@gmail.com> 1609102313 +0800	commit: 💕 Add direction
+e0480f160b5fb601015954d46c850129fdff3743 b31f1ae238c1e6eafce10b1f4c5349bcc7bc46ba Mithi <mithi.sevilla@gmail.com> 1609152467 +0800	commit: 🧹 Add PubNub
+b31f1ae238c1e6eafce10b1f4c5349bcc7bc46ba 4a46b59fbe36267694fe31ccaec5fb65a20d807d Mithi <mithi.sevilla@gmail.com> 1609152573 +0800	commit: 💕 Add keys module
+4a46b59fbe36267694fe31ccaec5fb65a20d807d 736d8a4330c2e717d1e4b09a0dd577db88471387 Mithi <mithi.sevilla@gmail.com> 1609152595 +0800	commit: 💕 Add utility methods
+736d8a4330c2e717d1e4b09a0dd577db88471387 b67509ac779be144cbc733db4ce5a19acf09b935 Mithi <mithi.sevilla@gmail.com> 1609152644 +0800	commit: 💕 Add johnny 5 test script for pubnub
+b67509ac779be144cbc733db4ce5a19acf09b935 d218cec843d69b3ebb7dac7f938ffcbbac5ed693 Mithi <mithi.sevilla@gmail.com> 1609152671 +0800	commit: 💕 Add other nodes scripts
+d218cec843d69b3ebb7dac7f938ffcbbac5ed693 2dc306c9a1f79036dc51798cbe0b9e67e430b76f Mithi <mithi.sevilla@gmail.com> 1609152686 +0800	commit: 📚 Add instructions
+2dc306c9a1f79036dc51798cbe0b9e67e430b76f dfd971be22a64add2d1a2cb83c7716898608f479 Mithi <mithi.sevilla@gmail.com> 1609153840 +0800	commit: 💕 Add recursive command prompt
+dfd971be22a64add2d1a2cb83c7716898608f479 30171b9f774d14c3c2720be79672ef0671371a56 Mithi <mithi.sevilla@gmail.com> 1609154968 +0800	commit: 💕 Publish using command prompt
+30171b9f774d14c3c2720be79672ef0671371a56 d5cbf92efdf76df75614267a5760e5fef184ccdf Mithi <mithi.sevilla@gmail.com> 1609154988 +0800	commit: 📚 Add instructions for test
+d5cbf92efdf76df75614267a5760e5fef184ccdf 30171b9f774d14c3c2720be79672ef0671371a56 Mithi <mithi.sevilla@gmail.com> 1609155007 +0800	reset: moving to HEAD~
+30171b9f774d14c3c2720be79672ef0671371a56 dfd971be22a64add2d1a2cb83c7716898608f479 Mithi <mithi.sevilla@gmail.com> 1609155013 +0800	reset: moving to HEAD~
+dfd971be22a64add2d1a2cb83c7716898608f479 8780378151b98271cba6925cf54d6480c193acf2 Mithi <mithi.sevilla@gmail.com> 1609155034 +0800	commit: 💕 Publish using command prompt
+8780378151b98271cba6925cf54d6480c193acf2 bc085259bcbe2dd40038f820eee13095f89dba83 Mithi <mithi.sevilla@gmail.com> 1609155105 +0800	commit: 📚Add test instructions
+bc085259bcbe2dd40038f820eee13095f89dba83 edf68ff9669df817e78275c148e7e3f274e18f6f Mithi <mithi.sevilla@gmail.com> 1609162671 +0800	commit: 💕 Add test of setting one servo
+edf68ff9669df817e78275c148e7e3f274e18f6f 98045a3e7c37ec833a9965438171fbed91d8ff63 Mithi <mithi.sevilla@gmail.com> 1609162698 +0800	commit: 📚 Add instructions of another test
+98045a3e7c37ec833a9965438171fbed91d8ff63 290148dbf7c81bd87c4f156e2d72beabdebcfac4 Mithi <mithi.sevilla@gmail.com> 1609167686 +0800	commit: 💕 Add react boilerplate
+290148dbf7c81bd87c4f156e2d72beabdebcfac4 06f0726840fb9c302c2705fb2d13fd98ca2c5221 Mithi <mithi.sevilla@gmail.com> 1609167703 +0800	commit: 🧹 Update gitignore
+06f0726840fb9c302c2705fb2d13fd98ca2c5221 8a74fc2cf5bcb7fcd1e278d181941e84094989ac Mithi <mithi.sevilla@gmail.com> 1609167717 +0800	commit: 📚 Update test instructions
+8a74fc2cf5bcb7fcd1e278d181941e84094989ac 5719b595aaed61ed95cb3f48ea3c4af636926154 Mithi <mithi.sevilla@gmail.com> 1609169758 +0800	commit: 🧹 Add pubnub react
+5719b595aaed61ed95cb3f48ea3c4af636926154 01b095f6424a8aa644a4fefa94060dc08fc11978 Mithi <mithi.sevilla@gmail.com> 1609169852 +0800	commit: 🌷 Add styles
+01b095f6424a8aa644a4fefa94060dc08fc11978 68a58233ba9a5cf3b5d3f369f26a4018351504b8 Mithi <mithi.sevilla@gmail.com> 1609169885 +0800	commit: 💕 Add react sample app
+68a58233ba9a5cf3b5d3f369f26a4018351504b8 da6e08792072c7123cc8c1b2ba39241994bcf481 Mithi <mithi.sevilla@gmail.com> 1609172874 +0800	commit: 🎨 Rename directory
+da6e08792072c7123cc8c1b2ba39241994bcf481 53a24dc557dd5c79de615e84af9e999d500c9721 Mithi <mithi.sevilla@gmail.com> 1609172893 +0800	commit: 📚 Update README
+53a24dc557dd5c79de615e84af9e999d500c9721 84cd48080b6c4bd57731d2fb612f67fb6d189af2 Mithi <mithi.sevilla@gmail.com> 1609172952 +0800	commit: 🧹❗ Rename project
