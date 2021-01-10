@@ -42,18 +42,29 @@ const transformPose = pose => {
     return newPose
 }
 
+let previousDate = new Date()
+let timeInterval = 300
+
 const App = () => {
     const [pageName, setPageName] = useState(SECTION_NAMES.landingPage)
     const [hexapod, setHexapod] = useState(() => updateHexapod("default"))
     const [revision, setRevision] = useState(0)
+    const [deltaDate, setDeltaDate] = useState(0)
     const pubnub = usePubNub()
 
     const inHexapodPage = pageName !== SECTION_NAMES.landingPage
 
     useEffect(() => {
-        pubnub
-            .publish({ channel, message: { pose: transformPose(hexapod.pose) } })
-            .then(() => console.log("."))
+        const currentDate = new Date()
+        let deltaDate = currentDate - previousDate
+
+        if (deltaDate > timeInterval) {
+            pubnub
+                .publish({ channel, message: { pose: transformPose(hexapod.pose) } })
+                .then(() => console.log("."))
+            previousDate = currentDate
+            setDeltaDate(deltaDate)
+        }
     }, [pubnub, hexapod])
 
     const manageState = useCallback((updateType, newParam) => {
@@ -92,6 +103,7 @@ const App = () => {
                         />
                     </div>
                     <Page pageComponent={pageComponent} />
+                    <p> deltaDate: {deltaDate} </p>
                     {!inHexapodPage ? <NavDetailed /> : null}
                 </div>
                 <div id="plot" className="border" hidden={!inHexapodPage}>
