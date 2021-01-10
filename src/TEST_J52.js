@@ -17,6 +17,18 @@ const LEG_POSITIONS = [
     "rightBack",
 ]
 
+/*
+let previousPose = {
+    leftFront: { alpha: 90, beta: 90, gamma: 90 },
+    rightFront: { alpha: 90, beta: 90, gamma: 90 },
+    leftMiddle: { alpha: 90, beta: 90, gamma: 90 },
+    rightMiddle: { alpha: 90, beta: 90, gamma: 90 },
+    leftBack: { alpha: 90, beta: 90, gamma: 90 },
+    rightBack: { alpha: 90, beta: 90, gamma: 90 },
+}
+*/
+let previousDate = new Date()
+
 board.on("ready", () => {
     console.log(".....Connected.....")
 
@@ -40,24 +52,36 @@ board.on("ready", () => {
         hexapodServos[leg].gamma.to(90)
     }
 
+    previousDate = new Date()
     // *************************
     // COMMAND SERVOS
     // *************************
-    const setServo = (pose, leg, angle) => hexapodServos[leg][angle].to(pose[leg][angle])
+    const setServo = (pose, leg, angle) => {
+        //const oldPose = previousPose[leg][angle]
+        const newPose = pose[leg][angle]
+        //const deltaPose = Math.abs(oldPose - newPose)
+        //hexapodServos[leg][angle].to(newPose, deltaPose, 10)
+        hexapodServos[leg][angle].to(newPose)
+    }
 
     const setHexapodPose = messageEvent => {
         //console.log("...setServo....", messageEvent.message)
         const pose = messageEvent.message.pose
-
         if (!pose) {
             return
         }
+        const currentDate = new Date()
+        const deltaDate = currentDate - previousDate
+        console.log("delta: ", deltaDate, "gamma: ", pose.rightMiddle.gamma)
 
         for (let leg of LEG_POSITIONS) {
             setServo(pose, leg, "alpha")
             setServo(pose, leg, "beta")
             setServo(pose, leg, "gamma")
         }
+
+        //previousPose = pose
+        previousDate = currentDate
     }
 
     // *************************
