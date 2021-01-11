@@ -4,14 +4,12 @@ const { SOCKET_SERVER_PORT, SOCKET_CLIENT_URLS, CHANNEL_NAME } = require("./_VAR
 
 const app = require("express")()
 const http = require("http").Server(app)
-// server-side
+
 const io = require("socket.io")(http, {
     cors: {
         origin: SOCKET_CLIENT_URLS,
     },
 })
-
-const board = new Board()
 
 const LEG_POSITIONS = [
     "leftFront",
@@ -22,8 +20,10 @@ const LEG_POSITIONS = [
     "rightBack",
 ]
 
+const board = new Board()
+
 board.on("ready", () => {
-    console.log("Board connected.")
+    console.log("board connected.")
 
     // *************************
     // INITIALIZE SERVOS
@@ -72,8 +72,7 @@ board.on("ready", () => {
         })
 
         socket.on(CHANNEL_NAME, msg => {
-            const lag = new Date() - msg.time
-            console.log("lag:", lag)
+            console.log("lag:", new Date() - msg.time)
             if (msg.pose) {
                 setHexapodPose(msg.pose)
             }
