@@ -1,8 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from "react"
 import socketIOClient from "socket.io-client"
-
-const SOCKET_SERVER_URL = "http://127.0.0.1:4001"
-const TIME_INTERVAL = 20
+import {
+    SOCKET_SERVER_URL,
+    MINIMUM_TIME_BETWEEN_MESSAGES,
+    CLIENT_SENDER_NAME,
+    CHANNEL_NAME,
+} from "./_VAR_CONFIG"
 
 const LEG_POSITIONS = [
     "leftFront",
@@ -52,15 +55,18 @@ const useSendPose = () => {
         pose => {
             const currentDate = new Date()
             const newDeltaDate = currentDate - lastDate
-            console.log("delta: ", newDeltaDate, "current: ", currentDate.getTime())
+
             // we shouldn't spam the robot with commands
-            if (newDeltaDate < TIME_INTERVAL) {
+            if (newDeltaDate < MINIMUM_TIME_BETWEEN_MESSAGES) {
+                console.log("too soon: ", newDeltaDate)
                 return
             }
 
-            socketRef.current.emit("setServo", {
+            console.log("just right: ", newDeltaDate)
+
+            socketRef.current.emit(CHANNEL_NAME, {
                 pose: transformPose(pose),
-                sender: "react-app",
+                sender: CLIENT_SENDER_NAME,
                 time: currentDate.getTime(),
             })
 

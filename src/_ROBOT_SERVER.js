@@ -1,12 +1,13 @@
 const { Board, Servo } = require("johnny-five")
 const { servoConfig } = require("./_SERVO_CONFIG")
+const { SOCKET_SERVER_PORT, SOCKET_CLIENT_URLS, CHANNEL_NAME } = require("./_VAR_CONFIG")
 
 const app = require("express")()
 const http = require("http").Server(app)
 // server-side
 const io = require("socket.io")(http, {
     cors: {
-        origin: ["http://localhost:5000", "http://192.168.254.105:5000"],
+        origin: SOCKET_CLIENT_URLS,
     },
 })
 
@@ -70,7 +71,9 @@ board.on("ready", () => {
             console.log("client disconnected.")
         })
 
-        socket.on("setServo", msg => {
+        socket.on(CHANNEL_NAME, msg => {
+            const lag = new Date() - msg.time
+            console.log("lag:", lag)
             if (msg.pose) {
                 setHexapodPose(msg.pose)
             }
@@ -78,6 +81,6 @@ board.on("ready", () => {
     })
 })
 
-http.listen(4001, function () {
-    console.log("listening on *:4001")
+http.listen(SOCKET_SERVER_PORT, function () {
+    console.log(`listening on *:${SOCKET_SERVER_PORT}`)
 })
