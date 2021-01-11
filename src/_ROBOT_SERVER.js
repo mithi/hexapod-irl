@@ -1,5 +1,5 @@
 const { Board, Servo } = require("johnny-five")
-const { servoConfig } = require("./SERVO_CONFIG")
+const { servoConfig } = require("./_SERVO_CONFIG")
 
 const app = require("express")()
 const http = require("http").Server(app)

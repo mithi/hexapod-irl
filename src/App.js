@@ -5,7 +5,7 @@ import { SECTION_NAMES } from "./components/vars"
 import { Nav, NavDetailed, DimensionsWidget } from "./components"
 import { updateHexapod, Page } from "./AppHelpers"
 import HexapodPlot from "./components/HexapodPlot"
-import useSendPose from "./HOOK"
+import useSendPose from "./_HOOK"
 
 const App = () => {
     const [pageName, setPageName] = useState(SECTION_NAMES.landingPage)
