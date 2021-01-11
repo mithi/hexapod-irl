@@ -1,11 +1,15 @@
 const { Board, Servo } = require("johnny-five")
-const PubNub = require("pubnub")
-const { keys } = require("./KEYS.js")
 const { servoConfig } = require("./SERVO_CONFIG")
 
-const uuid = "johnny-five-node-uuid-servo"
-const channel = "hexapod-pose"
-const pubnub = new PubNub({ ...keys, uuid, ssl: true })
+const app = require("express")()
+const http = require("http").Server(app)
+// server-side
+const io = require("socket.io")(http, {
+    cors: {
+        origin: ["http://localhost:5000", "http://192.168.254.105:5000"],
+    },
+})
+
 const board = new Board()
 
 const LEG_POSITIONS = [
@@ -17,20 +21,8 @@ const LEG_POSITIONS = [
     "rightBack",
 ]
 
-/*
-let previousPose = {
-    leftFront: { alpha: 90, beta: 90, gamma: 90 },
-    rightFront: { alpha: 90, beta: 90, gamma: 90 },
-    leftMiddle: { alpha: 90, beta: 90, gamma: 90 },
-    rightMiddle: { alpha: 90, beta: 90, gamma: 90 },
-    leftBack: { alpha: 90, beta: 90, gamma: 90 },
-    rightBack: { alpha: 90, beta: 90, gamma: 90 },
-}
-*/
-let previousDate = new Date()
-
 board.on("ready", () => {
-    console.log(".....Connected.....")
+    console.log("Board connected.")
 
     // *************************
     // INITIALIZE SERVOS
@@ -52,44 +44,40 @@ board.on("ready", () => {
         hexapodServos[leg].gamma.to(90)
     }
 
-    previousDate = new Date()
     // *************************
     // COMMAND SERVOS
     // *************************
     const setServo = (pose, leg, angle) => {
-        //const oldPose = previousPose[leg][angle]
         const newPose = pose[leg][angle]
-        //const deltaPose = Math.abs(oldPose - newPose)
-        //hexapodServos[leg][angle].to(newPose, deltaPose, 10)
         hexapodServos[leg][angle].to(newPose)
     }
 
-    const setHexapodPose = messageEvent => {
-        //console.log("...setServo....", messageEvent.message)
-        const pose = messageEvent.message.pose
-        if (!pose) {
-            return
-        }
-        const currentDate = new Date()
-        const deltaDate = currentDate - previousDate
-        console.log("delta: ", deltaDate, "gamma: ", pose.rightMiddle.gamma)
-
+    const setHexapodPose = pose => {
         for (let leg of LEG_POSITIONS) {
             setServo(pose, leg, "alpha")
             setServo(pose, leg, "beta")
             setServo(pose, leg, "gamma")
         }
-
-        //previousPose = pose
-        previousDate = currentDate
     }
 
     // *************************
-    // SUBSCRIBE AND LISTEN TO INCOMING MESSAGES
+    // LISTEN TO SOCKET
     // *************************
-    pubnub.addListener({
-        message: messageEvent => setHexapodPose(messageEvent),
-    })
+    io.on("connection", socket => {
+        console.log("client connected.")
 
-    pubnub.subscribe({ channels: [channel], withPresence: true })
+        socket.on("disconnect", () => {
+            console.log("client disconnected.")
+        })
+
+        socket.on("setServo", msg => {
+            if (msg.pose) {
+                setHexapodPose(msg.pose)
+            }
+        })
+    })
+})
+
+http.listen(4001, function () {
+    console.log("listening on *:4001")
 })
