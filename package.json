@@ -17,8 +17,10 @@
         "socket.io-client": "^3.0.5"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
+        "dev:client": "react-scripts start",
+        "build:client": "react-scripts build",
+        "prod:client": "npm run build:client && serve -s build",
+        "run:server": "node ./src/_ROBOT_SERVER.js",
         "eject": "react-scripts eject"
     },
     "eslintConfig": {
