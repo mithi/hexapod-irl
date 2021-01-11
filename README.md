@@ -10,40 +10,41 @@ This is a "fork" of the original [Bare-Minimum Hexapod Robot Simulator 2](https:
     <img src="https://user-images.githubusercontent.com/1670421/103467849-46981980-4d8e-11eb-911e-7cb63282c0c2.gif" alt="drawing" />
 </p>
 
+## 🚧 Work In Progress  🚧
 
-## ❗❗🚜 🚧 👷 🏗️ Under Heavy Construction ❗❗🚜 🚧 👷 🏗️
-(Use at your own risk! )
+❗❗🚜 🚧 👷 🏗️  (Underconstruction, use at your own risk! ) ❗❗🚜 🚧 👷 🏗️
 
-## How to Use
+## Updates
 
-1. Never built a hexapod robot before? The [mithi/hexy](https://github.com/mithi/hexy) repository is a great place to start! Included BOM!
+-   [`v0.2.0`](https://github.com/mithi/hexapod-irl/tree/socket-io-version) - Replace PubNub with [SocketIO](http://socket.io/). Based on my experiments, PubNub batches messages and isn't _"inrealtime"_ enough. Using SocketIO, the jankiness is significantly reduced.
+-   [`v0.1.0`](https://github.com/mithi/hexapod-irl/tree/pubnub-version) - Use [PubNub](https://www.pubnub.com/) to send commands. Janky.
+
+## How to Use (v0.0.2)
+
+1. Never built a hexapod robot before? The [mithi/hexy](https://github.com/mithi/hexy) repository is a great place to start! Includes the BOM!
 
 2. Build your hexapod robot with an [Arduino](http://arduino.cc/)-compatible / [Johnny-five](http://johnny-five.io/) compatible board. I personally used an [Adafruit Metro Mini 328](https://www.adafruit.com/product/2590). Don't forget to flash your board with the recommended standard firmata flavor (see also: [Johnny Five Wiki: Getting Started](https://github.com/rwaldron/johnny-five/wiki/Getting-Started))
 
-3. Create an account with [PubNub](https://pubnub.com) then update the keys in [`./src/KEYS.js`](https://github.com/mithi/hexapod-irl/blob/dev/src/KEYS.js)
+3. Update your servo config in [`./src/_SERVO_CONFIG.js`](./src/_SERVO_CONFIG.js). The [Johnny Five documentation, Servo API page](http://johnny-five.io/api/servo/) is your friend!
 
-4. Update your servo config in [`./src/SERVO_CONFIG.js`](https://github.com/mithi/hexapod-irl/blob/dev/src/SERVO_CONFIG.js). The [Johnny Five documentation, Servo API page](http://johnny-five.io/api/servo/) is your friend!
+4. I personally use two pwm pins of my board and one [PCA9685](https://www.adafruit.com/product/815) to drive my eighteen mg996r servos. If you do the same, make sure [you hook it up properly](https://learn.adafruit.com/16-channel-pwm-servo-driver/hooking-it-up)!
 
-5. I personally use two [PCA9685](https://www.adafruit.com/product/815) to drive my mg996r servos. If you do the same, make sure [you hook it up properly](https://learn.adafruit.com/16-channel-pwm-servo-driver/hooking-it-up)!
+5. Inspect and modify the variables in [`./src/_VAR_CONFIG.js`](./src/_VAR_CONFIG.js) as needed.
 
-6. This is how the angle of each servo is transformed [(function)](https://github.com/mithi/hexapod-irl/blob/0d0bb156b7c79b2c7945e9793f6bf11b56866e68/src/App.js#L29) based on my specific hexapod robot configuration. You can modify this to suit your needs.
+6. This is how the angle of each servo is transformed [(function)](./src/_TRANSFORM.js) based on my specific physical hexapod robot configuration. Modify this to suit your needs.
 
-7. More importantly, also inspect the bare minimum [node script](https://github.com/mithi/hexapod-irl/blob/dev/src/TEST_J52.js) that will talk to your Arduino and the front-end web app / user interface.
+7. This is the bare minimum [node script](./src/_ROBOT_SERVER.js) that will talk to your Arduino and the front-end web app / user interface. Modify this to suit your needs.
 
 8. Open two terminal tabs and run the following:
 
 ```
 $ npm install
 
-# on one terminal tab
+# on one terminal tab, this builds and serves the react app
+$ npm run prod:client
 
-$ npm run build
-$ npm install -g serve
-$ serve -s build
-
-# on another terminal tab
-
-$ node ./src/TEST_J52.js
+# on another terminal tab, this runs the johnny-five script
+$ npm run run:server
 ```
 
 Enjoy!

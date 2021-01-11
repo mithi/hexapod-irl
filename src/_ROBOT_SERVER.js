@@ -1,12 +1,15 @@
 const { Board, Servo } = require("johnny-five")
-const PubNub = require("pubnub")
-const { keys } = require("./KEYS.js")
-const { servoConfig } = require("./SERVO_CONFIG")
+const { servoConfig } = require("./_SERVO_CONFIG")
+const { SOCKET_SERVER_PORT, SOCKET_CLIENT_URLS, CHANNEL_NAME } = require("./_VAR_CONFIG")
 
-const uuid = "johnny-five-node-uuid-servo"
-const channel = "hexapod-pose"
-const pubnub = new PubNub({ ...keys, uuid, ssl: true })
-const board = new Board()
+const app = require("express")()
+const http = require("http").Server(app)
+
+const io = require("socket.io")(http, {
+    cors: {
+        origin: SOCKET_CLIENT_URLS,
+    },
+})
 
 const LEG_POSITIONS = [
     "leftFront",
@@ -17,8 +20,10 @@ const LEG_POSITIONS = [
     "rightBack",
 ]
 
+const board = new Board()
+
 board.on("ready", () => {
-    console.log(".....Connected.....")
+    console.log("board connected.")
 
     // *************************
     // INITIALIZE SERVOS
@@ -43,16 +48,12 @@ board.on("ready", () => {
     // *************************
     // COMMAND SERVOS
     // *************************
-    const setServo = (pose, leg, angle) => hexapodServos[leg][angle].to(pose[leg][angle])
+    const setServo = (pose, leg, angle) => {
+        const newPose = pose[leg][angle]
+        hexapodServos[leg][angle].to(newPose)
+    }
 
-    const setHexapodPose = messageEvent => {
-        //console.log("...setServo....", messageEvent.message)
-        const pose = messageEvent.message.pose
-
-        if (!pose) {
-            return
-        }
-
+    const setHexapodPose = pose => {
         for (let leg of LEG_POSITIONS) {
             setServo(pose, leg, "alpha")
             setServo(pose, leg, "beta")
@@ -61,11 +62,24 @@ board.on("ready", () => {
     }
 
     // *************************
-    // SUBSCRIBE AND LISTEN TO INCOMING MESSAGES
+    // LISTEN TO SOCKET
     // *************************
-    pubnub.addListener({
-        message: messageEvent => setHexapodPose(messageEvent),
-    })
+    io.on("connection", socket => {
+        console.log("client connected.")
 
-    pubnub.subscribe({ channels: [channel], withPresence: true })
+        socket.on("disconnect", () => {
+            console.log("client disconnected.")
+        })
+
+        socket.on(CHANNEL_NAME, msg => {
+            console.log("lag:", new Date() - msg.time)
+            if (msg.pose) {
+                setHexapodPose(msg.pose)
+            }
+        })
+    })
+})
+
+http.listen(SOCKET_SERVER_PORT, function () {
+    console.log(`listening on *:${SOCKET_SERVER_PORT}`)
 })

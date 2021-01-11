@@ -5,56 +5,16 @@ import { SECTION_NAMES } from "./components/vars"
 import { Nav, NavDetailed, DimensionsWidget } from "./components"
 import { updateHexapod, Page } from "./AppHelpers"
 import HexapodPlot from "./components/HexapodPlot"
-import { usePubNub } from "pubnub-react"
-
-const channel = "hexapod-pose"
-
-const LEG_POSITIONS = [
-    "leftFront",
-    "rightFront",
-    "leftMiddle",
-    "rightMiddle",
-    "leftBack",
-    "rightBack",
-]
-
-const LEFT_LEGS = ["leftFront", "leftMiddle", "leftBack"]
-
-const clean = (x, shouldInvert) => {
-    let directed = shouldInvert ? -1 * x : x
-    //return Math.max(Math.min(Math.round(directed) + 90, 180), 0)
-    return directed + 90
-}
-
-const transformPose = pose => {
-    let newPose = {}
-
-    for (let leg of LEG_POSITIONS) {
-        const { alpha, beta, gamma } = pose[leg]
-        const isLeft = LEFT_LEGS.includes(leg)
-        newPose[leg] = {
-            alpha: clean(alpha, true),
-            beta: clean(beta, isLeft),
-            gamma: clean(gamma, !isLeft),
-        }
-    }
-
-    return newPose
-}
+import useSendPose from "./_HOOK"
 
 const App = () => {
     const [pageName, setPageName] = useState(SECTION_NAMES.landingPage)
     const [hexapod, setHexapod] = useState(() => updateHexapod("default"))
     const [revision, setRevision] = useState(0)
-    const pubnub = usePubNub()
-
     const inHexapodPage = pageName !== SECTION_NAMES.landingPage
+    const [sendPose, deltaDate] = useSendPose()
 
-    useEffect(() => {
-        pubnub
-            .publish({ channel, message: { pose: transformPose(hexapod.pose) } })
-            .then(() => console.log("."))
-    }, [pubnub, hexapod])
+    useEffect(() => sendPose(hexapod.pose), [hexapod, sendPose])
 
     const manageState = useCallback((updateType, newParam) => {
         setRevision(r => r + 1)
@@ -92,6 +52,7 @@ const App = () => {
                         />
                     </div>
                     <Page pageComponent={pageComponent} />
+                    <p> deltaDate: {deltaDate} </p>
                     {!inHexapodPage ? <NavDetailed /> : null}
                 </div>
                 <div id="plot" className="border" hidden={!inHexapodPage}>
