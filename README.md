@@ -10,14 +10,14 @@ This is a "fork" of the original [Bare-Minimum Hexapod Robot Simulator 2](https:
     <img src="https://user-images.githubusercontent.com/1670421/103467849-46981980-4d8e-11eb-911e-7cb63282c0c2.gif" alt="drawing" />
 </p>
 
-## ❗❗🚜 🚧 👷 🏗️ Under Heavy Construction ❗❗🚜 🚧 👷 🏗️
+## 🚧 Work In Progress  🚧
 
-(Use at your own risk! )
+❗❗🚜 🚧 👷 🏗️  (Underconstruction, use at your own risk! ) ❗❗🚜 🚧 👷 🏗️
 
 ## Updates
 
--   `v0.0.2` - Replace PubNub with [SocketIO](http://socket.io/). Based on my experiments, PubNub batches messages and isn't "in-real-time" enough. Using SocketIO, the result is about 50x smoother in my opinion.
--   `v0.0.1` - Use [PubNub](https://www.pubnub.com/) to send commands. Janky.
+-   [`v0.2.0`](https://github.com/mithi/hexapod-irl/tree/socket-io-version) - Replace PubNub with [SocketIO](http://socket.io/). Based on my experiments, PubNub batches messages and isn't _"inrealtime"_ enough. Using SocketIO, the jankiness is significantly reduced.
+-   [`v0.1.0`](https://github.com/mithi/hexapod-irl/tree/pubnub-version) - Use [PubNub](https://www.pubnub.com/) to send commands. Janky.
 
 ## How to Use (v0.0.2)
 
@@ -29,22 +29,22 @@ This is a "fork" of the original [Bare-Minimum Hexapod Robot Simulator 2](https:
 
 4. I personally use two pwm pins of my board and one [PCA9685](https://www.adafruit.com/product/815) to drive my eighteen mg996r servos. If you do the same, make sure [you hook it up properly](https://learn.adafruit.com/16-channel-pwm-servo-driver/hooking-it-up)!
 
-5. Modify the variables in [`./src/_VAR_CONFIG.js`](./src/_SERVO_CONFIG.js) as needed.
+5. Inspect and modify the variables in [`./src/_VAR_CONFIG.js`](./src/_VAR_CONFIG.js) as needed.
 
-6. This is how the angle of each servo is transformed [(function)](./src/_TRANSFORM.js) based on my specific physical hexapod robot configuration. You can modify this to suit your needs.
+6. This is how the angle of each servo is transformed [(function)](./src/_TRANSFORM.js) based on my specific physical hexapod robot configuration. Modify this to suit your needs.
 
-7. This is the bare minimum [node script](./src/_ROBOT_SERVER.js) that will talk to your Arduino and the front-end web app / user interface.
+7. This is the bare minimum [node script](./src/_ROBOT_SERVER.js) that will talk to your Arduino and the front-end web app / user interface. Modify this to suit your needs.
 
 8. Open two terminal tabs and run the following:
 
 ```
 $ npm install
 
-# on one terminal tab, this runs the react app
+# on one terminal tab, this builds and serves the react app
 $ npm run prod:client
 
 # on another terminal tab, this runs the johnny-five script
-$ nnpm run run:server
+$ npm run run:server
 ```
 
 Enjoy!
