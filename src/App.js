@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect, useCallback, useRef } from "react"
 import { BrowserRouter as Router } from "react-router-dom"
 import { DEFAULT_POSE } from "./templates"
 import { SECTION_NAMES } from "./components/vars"
 import { Nav, NavDetailed, DimensionsWidget } from "./components"
 import { updateHexapod, Page } from "./AppHelpers"
 import HexapodPlot from "./components/HexapodPlot"
-import { usePubNub } from "pubnub-react"
+import socketIOClient from "socket.io-client"
 
-const channel = "hexapod-pose"
+const SOCKET_SERVER_URL = "http://127.0.0.1:4001"
+const TIME_INTERVAL = 20
 
 const LEG_POSITIONS = [
     "leftFront",
@@ -42,30 +43,50 @@ const transformPose = pose => {
     return newPose
 }
 
-let previousDate = new Date()
-let timeInterval = 300
+const useSendPose = () => {
+    const socketRef = useRef()
+    const [lastDate, setLastDate] = useState(() => new Date())
+    // delta date is the interval between the last two messages sent
+    const [deltaDate, setDeltaDate] = useState(0)
+
+    useEffect(() => {
+        socketRef.current = socketIOClient(SOCKET_SERVER_URL)
+        return () => socketRef.current.disconnect()
+    }, [])
+
+    const sendPose = useCallback(
+        pose => {
+            const currentDate = new Date()
+            const newDeltaDate = currentDate - lastDate
+            console.log("delta: ", newDeltaDate, "current: ", currentDate.getTime())
+            // we shouldn't spam the robot with commands
+            if (newDeltaDate < TIME_INTERVAL) {
+                return
+            }
+
+            socketRef.current.emit("setServo", {
+                pose: transformPose(pose),
+                sender: "react-app",
+                time: currentDate.getTime(),
+            })
+
+            setLastDate(currentDate)
+            setDeltaDate(newDeltaDate)
+        },
+        [lastDate]
+    )
+
+    return [sendPose, deltaDate]
+}
 
 const App = () => {
     const [pageName, setPageName] = useState(SECTION_NAMES.landingPage)
     const [hexapod, setHexapod] = useState(() => updateHexapod("default"))
     const [revision, setRevision] = useState(0)
-    const [deltaDate, setDeltaDate] = useState(0)
-    const pubnub = usePubNub()
-
     const inHexapodPage = pageName !== SECTION_NAMES.landingPage
+    const [sendPose, deltaDate] = useSendPose()
 
-    useEffect(() => {
-        const currentDate = new Date()
-        let deltaDate = currentDate - previousDate
-
-        if (deltaDate > timeInterval) {
-            pubnub
-                .publish({ channel, message: { pose: transformPose(hexapod.pose) } })
-                .then(() => console.log("."))
-            previousDate = currentDate
-            setDeltaDate(deltaDate)
-        }
-    }, [pubnub, hexapod])
+    useEffect(() => sendPose(hexapod.pose), [hexapod, sendPose])
 
     const manageState = useCallback((updateType, newParam) => {
         setRevision(r => r + 1)
